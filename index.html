@@ -122,6 +122,7 @@
 			<button id="sphere">SPHERE</button>
 			<button id="helix">HELIX</button>
 			<button id="grid">GRID</button>
+			<button id="pyramid">PYRAMID</button>
 		</div>
 
 		<script type="module">
@@ -253,7 +254,7 @@
 			var camera, scene, renderer;
 			var controls;
 			var objects = [];
-			var targets = { table: [], sphere: [], helix: [], grid: [] };
+			var targets = { table: [], sphere: [], helix: [], grid: [], pyramid: [] };
 			init();
 			animate();
 			function init() {
@@ -328,6 +329,182 @@
 					object.position.z = ( Math.floor( i / 25 ) ) * 1000 - 2000;
 					targets.grid.push( object );
 				}
+				//pyramid
+				//loop for the front face
+				var vector = new THREE.Vector3();
+				var counter = 1;
+				var counter_max = 1;
+				var counter_alignment = 0;
+				var line_Y = 0;
+				for ( var i = 0; i < objects.length; i += 4 ) {
+					var object = new THREE.Object3D();
+					object.position.x = ( ( ( i / 4 ) % counter_max ) * 150 ) - ( 150 * counter_alignment );
+					object.position.y = 0 - line_Y ;
+					object.position.z = ( 0 + line_Y ) * 2 / 3;
+
+					vector.x = object.position.x;
+					vector.y = object.position.y + 90;
+					vector.z = object.position.z + 200;
+					object.lookAt( vector );
+
+					targets.pyramid.push( object );
+
+					if( counter == counter_max ){
+						counter = 0;
+						counter_max += 2;
+						line_Y += 150;
+						counter_alignment += 1;
+					}
+					counter += 1;
+				}
+				//loop for the left face
+				var vector = new THREE.Vector3();
+				var counter = 1;
+				var counter_max = 1;
+				var counter_alignment = 0;
+				var line_Y = 0;
+				for ( var i = 1; i < objects.length; i += 4 ) {
+					var object = new THREE.Object3D();
+					object.position.x = ( 120 + ( ( ( ( (i-1) / 4 ) % counter_max ) * 90 ) - 300 ) - ( 150 * counter_alignment ) );
+					object.position.y = 0 - line_Y  ;
+					object.position.z = ( -450 - ( ( ( ( (i-1) / 4 ) % counter_max ) * 140 ) - 300 ) + ( 100 * counter_alignment ) );
+					vector.x = object.position.x - 200;
+					vector.y = object.position.y + 120;
+					vector.z = object.position.z - 120;
+					object.lookAt( vector );
+
+					targets.pyramid.push( object );
+
+					if( counter == counter_max ){
+						counter = 0;
+						counter_max += 2;
+						line_Y += 150;
+						counter_alignment += 1;
+					}
+					counter += 1;
+				}
+				//loop for the right face
+				var vector = new THREE.Vector3();
+				var counter = 1;
+				var counter_max = 1;
+				var counter_alignment = 0;
+				var line_Y = 0;
+				for ( var i = 2; i < objects.length; i += 4 ) {
+					var object = new THREE.Object3D();
+					object.position.x = -120 - ( ( ( ( (i-2) / 4 ) % counter_max ) * 90 ) - 300 ) + ( 150 * counter_alignment );
+					object.position.y = 0 - line_Y ;
+					object.position.z = -450 - ( ( ( ( (i-2) / 4 ) % counter_max ) * 140 ) - 300 ) + ( 100 * counter_alignment );
+					vector.x = object.position.x + 200;
+					vector.y = object.position.y + 120;
+					vector.z = object.position.z - 120;
+					object.lookAt( vector );
+
+					targets.pyramid.push( object );
+
+					if( counter == counter_max ){
+						counter = 0;
+						counter_max += 2;
+						line_Y += 150;
+						counter_alignment += 1;
+					}
+					counter += 1;
+				}
+				//loop for base
+				var line_limit = counter_alignment;
+				var vector = new THREE.Vector3();
+				var counter = 1;
+				var counter_max = 1;
+				var counter_alignment = 0;
+				for ( var i = 3; i < objects.length; i += 4 ) {
+					var object = new THREE.Object3D();
+					object.position.x = ( ( ( i-3 / 4 ) % counter_max ) * 150 ) - ( 150 * counter_alignment );
+					object.position.y = -120 - line_Y;
+					object.position.z = ( (line_limit + 1 ) * -100 ) + ( 0 + 180 * counter_alignment );
+
+					vector.x = object.position.x;
+					vector.y = object.position.y - 10;
+					vector.z = object.position.z;
+					object.lookAt( vector );
+
+					targets.pyramid.push( object );
+
+					if( counter == counter_max ){
+						counter = 0;
+						counter_max += 2;
+						counter_alignment += 1;
+					}
+					counter += 1;
+				}
+				/*
+				var counter = 1;
+				var counter_max = 1;
+				var counter_alignment = 0;
+				var counter_z = 1;
+				var line_Y = 0;
+				//loop for the front face
+				for ( var i = 1; i < objects.length; i += 4 ) {
+					var object = new THREE.Object3D();
+					object.position.x = ( ( ( ( (i-1) / 4 ) % counter_max ) * 150 ) - 300 ) - ( 150 * counter_alignment );
+					object.position.y = 0 - line_Y;
+					object.position.z = -1 + line_Y;
+					targets.pyramid.push( object );
+
+					if( counter == counter_max ){
+						counter = 0;
+						counter_max += 2;
+						line_Y += 200;
+						counter_alignment += 1;
+					}
+					counter += 1;
+				}
+				*/
+				/*
+				var vector = new THREE.Vector3();
+				var counter = 1;
+				var counter_max = 3;
+				var counter_alignment = 0;
+				var counter_z = 1;
+				var line_Y = 5;
+				var z_value = -1;
+				var j = 0;
+				for ( var i = 0; i < objects.length; i ++ ) {
+
+					var object = new THREE.Object3D();
+					
+					
+					object.position.x = ( ( ( i % counter_max ) * 150 ) - 300 ) - ( 150 * counter_alignment );
+					object.position.y = 0 - line_Y;
+					object.position.z = ( 0 + line_Y ) ;//* z_value ;
+					
+					j += 1;
+					if ( j == counter_z){
+						z_value *= -1;
+						j = 0;
+					}
+ 					
+ 					
+					vector.x = object.position.x;
+					vector.y = object.position.y - 2;
+					vector.z = object.position.z - 2;
+					object.lookAt( vector );
+					
+
+					targets.pyramid.push( object );
+					//z loop
+					
+					//remember to add in targets array
+					if( counter == counter_max ){
+						counter = 0;
+						counter_max += 6;
+						line_Y += 200;
+						counter_alignment += 3;
+						//counter_z += 2;
+					}
+					counter += 1;
+				}
+				*/
+
+				
 				//
 				renderer = new CSS3DRenderer();
 				renderer.setSize( window.innerWidth, window.innerHeight );
@@ -352,6 +529,10 @@
 				var button = document.getElementById( 'grid' );
 				button.addEventListener( 'click', function () {
 					transform( targets.grid, 2000 );
+				}, false );
+				var button = document.getElementById( 'pyramid' );
+				button.addEventListener( 'click', function () {
+					transform( targets.pyramid, 2000 );
 				}, false );
 				transform( targets.table, 2000 );
 				//
